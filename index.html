@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopping Bag | Abercrombie & Fitch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root { --green: #2e7d32; --red: #c41e3a; --bg: #fff; --muted: #666; --border: #e5e5e5; --surface: #f7f7f7; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', -apple-system, sans-serif; background: #f5f5f5; color: #111; line-height: 1.4; }
+    .top-promo { background: #111; color: white; text-align: center; padding: 8px 16px; font-size: 13px; }
+    header { background: white; border-bottom: 1px solid var(--border); }
+    .header-inner { max-width: 1200px; margin: 0 auto; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .logo { font-size: 18px; font-weight: 600; letter-spacing: -0.3px; }
+    .nav { display: none; gap: 20px; }
+    @media (min-width: 900px) { .nav { display: flex; } }
+    .nav a { color: #111; text-decoration: none; font-size: 14px; }
+    .header-right { display: flex; align-items: center; gap: 16px; }
+    .search { display: none; }
+    @media (min-width: 768px) { .search { display: flex; align-items: center; border-bottom: 1px solid #ccc; padding: 4px 0; } }
+    .search input { border: none; outline: none; font-size: 14px; width: 140px; }
+    .bag-icon { position: relative; }
+    .bag-count { position: absolute; top: -6px; right: -8px; background: #c41e3a; color: white; font-size: 10px; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .main { max-width: 1100px; margin: 20px auto; padding: 0 16px; display: block; }
+    @media (min-width: 900px) { .main { display: flex; gap: 40px; padding: 0 24px; } }
+    .bag-column { flex: 1; background: white; padding: 24px; }
+    .summary-column { width: 100%; background: white; padding: 24px; margin-top: 16px; }
+    @media (min-width: 900px) { .summary-column { width: 360px; margin-top: 0; flex-shrink: 0; } }
+    h1 { font-size: 26px; font-weight: 500; margin-bottom: 20px; }
+    .bag-item { display: flex; gap: 16px; padding: 20px 0; border-bottom: 1px solid var(--border); position: relative; }
+    .bag-item img { width: 110px; height: 140px; object-fit: cover; background: #f0f0f0; }
+    @media (min-width: 768px) { .bag-item img { width: 130px; height: 160px; } }
+    .item-info { flex: 1; }
+    .item-name { font-size: 15px; margin-bottom: 2px; }
+    .item-sku { font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+    .item-variant { font-size: 14px; margin-bottom: 6px; }
+    .price-row { font-size: 14px; }
+    .price-row .original { text-decoration: line-through; color: var(--muted); margin-right: 6px; display: none; }
+    .price-row .sale { color: var(--red); }
+    .edit-link { font-size: 13px; color: #111; text-decoration: underline; margin-top: 8px; display: inline-block; }
+    .remove-btn { position: absolute; top: 16px; right: 0; background: none; border: none; font-size: 18px; cursor: pointer; color: #111; }
+    .promo-section { border: 1px solid var(--border); padding: 14px 16px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+    .order-summary h3 { font-size: 18px; font-weight: 600; margin-bottom: 16px; }
+    .summary-row { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 10px; }
+    .summary-row.subtotal { font-weight: 600; margin-top: 8px; }
+    .summary-row.discount { color: var(--red); }
+    .checkout-btn { width: 100%; background: var(--green); color: white; border: none; padding: 16px; font-size: 16px; font-weight: 500; cursor: pointer; margin: 16px 0; }
+    .express-label { text-align: center; font-size: 13px; color: var(--muted); margin: 12px 0; position: relative; }
+    .express-label::before, .express-label::after { content: ''; position: absolute; top: 50%; width: 30%; height: 1px; background: var(--border); }
+    .express-label::before { left: 0; }
+    .express-label::after { right: 0; }
+    .pay-btn { width: 100%; border: 1.5px solid #111; background: white; padding: 14px; font-size: 15px; font-weight: 500; cursor: pointer; margin-bottom: 10px; }
+    .klarna-note { font-size: 13px; color: var(--muted); text-align: center; margin: 16px 0; }
+    .ref-id { font-size: 13px; display: flex; align-items: center; gap: 6px; margin-top: 12px; }
+    .promo-input-wrap { display: none; margin-bottom: 16px; }
+    .promo-input-wrap input { width: 100%; padding: 12px; border: 1px solid var(--border); margin-bottom: 8px; font-size: 14px; }
+    .promo-input-wrap button { width: 100%; padding: 12px; background: #111; color: white; border: none; cursor: pointer; }
+    .chat-fab { position: fixed; bottom: 20px; left: 20px; width: 48px; height: 48px; background: #111; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; }
+  </style>
+</head>
+<body>
+  <div class="top-promo">A Very Abercrombie Black Friday: 25-50% Off Everything A&F* · Free Standard Shipping and Handling On All Orders Over $99^</div>
+  <header>
+    <div class="header-inner">
+      <div class="logo">Abercrombie & Fitch</div>
+      <nav class="nav">
+        <a href="#">New</a><a href="#">Women's</a><a href="#">Men's</a><a href="#">NFL</a>
+        <a href="#">Gifts</a><a href="#">Jeans</a><a href="#">Active</a><a href="#">kids</a>
+        <a href="#">baby & toddler</a><a href="#">Sale</a><a href="#">About Us</a>
+      </nav>
+      <div class="header-right">
+        <div class="search"><span>🔍</span><input type="text" placeholder="Search"></div>
+        <span>🇺🇸</span>
+        <span>♡</span>
+        <div class="bag-icon">🛍️<span class="bag-count">5</span></div>
+      </div>
+    </div>
+  </header>
+  <div class="main">
+    <div class="bag-column">
+      <h1>Shopping Bag (5 items)</h1>
+      <div class="bag-item" data-price="130">
+        <img src="product-images/blue wool blend funnel neck cardigan.jpg" alt="Wool-Blend Funnel Neck Cardigan Blue">
+        <div class="item-info">
+          <button class="remove-btn">×</button>
+          <div class="item-name">Wool-Blend Funnel Neck Cardigan</div>
+          <div class="item-sku">Women's: 672940572</div>
+          <div class="item-variant">M, Blue Pattern</div>
+          <div class="price-row"><span class="normal">$130</span><span class="original"></span><span class="sale"></span></div>
+          <a href="#" class="edit-link">Edit</a>
+        </div>
+      </div>
+      <div class="bag-item" data-price="120">
+        <img src="product-images/red wool blend funnel neck cardigan.jpg" alt="Wool-Blend Funnel Neck Cardigan Red">
+        <div class="item-info">
+          <button class="remove-btn">×</button>
+          <div class="item-name">Wool-Blend Funnel Neck Cardigan</div>
+          <div class="item-sku">Women's: 672997819</div>
+          <div class="item-variant">M, Vivid Red</div>
+          <div class="price-row"><span class="normal">$120</span><span class="original"></span><span class="sale"></span></div>
+          <a href="#" class="edit-link">Edit</a>
+        </div>
+      </div>
+      <div class="bag-item" data-price="75">
+        <img src="product-images/heritage heavyweight crew sweatshirt.jpg" alt="Heritage Heavyweight Crew Sweatshirt">
+        <div class="item-info">
+          <button class="remove-btn">×</button>
+          <div class="item-name">Heritage Heavyweight Crew Sweatshirt</div>
+          <div class="item-sku">Women's: 673123988</div>
+          <div class="item-variant">XS, Light Heather Gray</div>
+          <div class="price-row"><span class="normal">$75</span><span class="original"></span><span class="sale"></span></div>
+          <a href="#" class="edit-link">Edit</a>
+        </div>
+      </div>
+      <div class="bag-item" data-price="120">
+        <img src="product-images/sherpa full-zip jacket.jpg" alt="Sherpa Full-Zip Jacket">
+        <div class="item-info">
+          <button class="remove-btn">×</button>
+          <div class="item-name">Sherpa Full-Zip Jacket</div>
+          <div class="item-sku">Women's: 673211283</div>
+          <div class="item-variant">M, Cream Plaid</div>
+          <div class="price-row"><span class="normal">$120</span><span class="original"></span><span class="sale"></span></div>
+          <a href="#" class="edit-link">Edit</a>
+        </div>
+      </div>
+    </div>
+    <div class="summary-column">
+      <div class="promo-section" id="promoToggle">Promotions <span>+</span></div>
+      <div class="promo-input-wrap" id="promoWrap">
+        <input type="text" id="promoInput" placeholder="Enter promo code">
+        <button id="applyPromo">Apply</button>
+      </div>
+      <div class="order-summary">
+        <h3>Order Summary</h3>
+        <div class="summary-row"><span>Items (5)</span><span id="itemsTotal">$445.00</span></div>
+        <div class="summary-row discount" id="discountRow" style="display:none;"><span>Discount applied</span><span id="discountAmount">-$400.50</span></div>
+        <div class="summary-row"><span>Promotions</span><span id="promoLine">$0</span></div>
+        <div class="summary-row subtotal"><span>Subtotal</span><span id="subtotal">$445.00</span></div>
+        <button class="checkout-btn">Checkout</button>
+        <div class="express-label">Express Checkout</div>
+        <button class="pay-btn">Pay with 🍎 Pay</button>
+        <button class="pay-btn">Pay with <span style="color:#003087;font-weight:700;">Pay</span><span style="color:#009cde;font-weight:700;">Pal</span></button>
+        <div class="klarna-note">4 interest-free payments of $111.25 with <strong>Klarna</strong> or <strong>PayPal</strong></div>
+        <div class="ref-id"><input type="checkbox"> Reference ID #21373677772</div>
+      </div>
+    </div>
+  </div>
+  <button class="chat-fab">💬</button>
+<script>
+const originalTotal = 445.00;
+let promoApplied = false;
+document.getElementById('promoToggle').addEventListener('click', function() {
+  const wrap = document.getElementById('promoWrap');
+  wrap.style.display = wrap.style.display === 'block' ? 'none' : 'block';
+});
+document.getElementById('applyPromo').addEventListener('click', function() {
+  const code = document.getElementById('promoInput').value.trim();
+  if (!code || promoApplied) return;
+  const discount = originalTotal * 0.90;
+  const newTotal = originalTotal - discount;
+  document.querySelectorAll('.bag-item').forEach(item => {
+    const price = parseFloat(item.dataset.price);
+    const newPrice = (price * 0.10).toFixed(2);
+    const row = item.querySelector('.price-row');
+    row.querySelector('.normal').style.display = 'none';
+    row.querySelector('.original').textContent = '$' + price.toFixed(2);
+    row.querySelector('.original').style.display = 'inline';
+    row.querySelector('.sale').textContent = '$' + newPrice + ' Black Friday Price';
+    row.querySelector('.sale').style.color = '#c41e3a';
+  });
+  document.getElementById('discountRow').style.display = 'flex';
+  document.getElementById('discountAmount').textContent = '-$' + discount.toFixed(2);
+  document.getElementById('subtotal').textContent = '$' + newTotal.toFixed(2);
+  document.getElementById('promoLine').textContent = '-$' + discount.toFixed(2);
+  document.getElementById('promoInput').disabled = true;
+  this.textContent = 'Applied';
+  this.style.background = '#666';
+  promoApplied = true;
+});
+</script>
+</body>
+</html>
